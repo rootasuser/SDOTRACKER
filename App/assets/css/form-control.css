@@ -1,0 +1,8 @@
+#empAssignSchool, #empPosition, #empTeachingSubject {
+    text-transform: uppercase;
+}
+
+.first-line-indent::first-line {
+    margin-left: 25px;
+}
+

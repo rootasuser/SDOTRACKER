@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /sdotracker/
+
+# Rewrite the dashboard URL to the PHP file
+RewriteRule ^App/Modules/User/dashboard$ /sdotracker/App/Modules/User/dashboard.php [L]

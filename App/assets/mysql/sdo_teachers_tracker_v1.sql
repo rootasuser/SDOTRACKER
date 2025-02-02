@@ -1,0 +1,785 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Feb 02, 2025 at 05:05 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `sdo_teachers_tracker_v1`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employees`
+--
+
+CREATE TABLE `employees` (
+  `id` int(11) NOT NULL,
+  `empName` varchar(255) NOT NULL,
+  `empNumber` varchar(50) NOT NULL,
+  `empAddress` text NOT NULL,
+  `empSex` varchar(10) NOT NULL,
+  `empPosition_id` int(11) NOT NULL,
+  `empAssignSchool_id` int(11) NOT NULL,
+  `empHistory` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employee_subjects`
+--
+
+CREATE TABLE `employee_subjects` (
+  `id` int(11) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `subject_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
+
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `action` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `positions`
+--
+
+CREATE TABLE `positions` (
+  `id` int(11) NOT NULL,
+  `empPosition` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `positions`
+--
+
+INSERT INTO `positions` (`id`, `empPosition`, `created_at`) VALUES
+(1, 'Teacher I', '2025-01-29 04:35:35'),
+(2, 'Teacher II', '2025-01-29 04:35:35'),
+(3, 'Teacher III', '2025-01-29 04:35:35'),
+(4, 'Teacher IV', '2025-01-29 04:35:35'),
+(5, 'Teacher V', '2025-01-29 04:35:35'),
+(6, 'Teacher VI', '2025-01-29 04:35:35'),
+(7, 'Master Teacher I', '2025-01-29 04:35:35'),
+(8, 'Master Teacher II', '2025-01-29 04:35:35'),
+(9, 'Master Teacher III', '2025-01-29 04:35:35'),
+(10, 'Master Teacher IV', '2025-01-29 04:35:35'),
+(11, 'Master Teacher V', '2025-01-29 04:35:35'),
+(12, 'Master Teacher VI', '2025-01-29 04:35:35'),
+(13, 'Master Teacher VII', '2025-01-29 04:35:35'),
+(14, 'Master Teacher VIII', '2025-01-29 04:35:35'),
+(15, 'Master Teacher IX', '2025-01-29 04:35:35'),
+(16, 'Master Teacher X', '2025-01-29 04:35:35'),
+(17, 'Head Teacher I', '2025-01-29 04:35:35'),
+(18, 'Head Teacher II', '2025-01-29 04:35:35'),
+(19, 'Head Teacher III', '2025-01-29 04:35:35'),
+(20, 'Head Teacher IV', '2025-01-29 04:35:35'),
+(21, 'Head Teacher V', '2025-01-29 04:35:35'),
+(22, 'Head Teacher VI', '2025-01-29 04:35:35'),
+(23, 'Principal I', '2025-01-29 04:35:35'),
+(24, 'Principal II', '2025-01-29 04:35:35'),
+(25, 'Principal III', '2025-01-29 04:35:35'),
+(26, 'Principal IV', '2025-01-29 04:35:35'),
+(27, 'Principal V', '2025-01-29 04:35:35'),
+(28, 'Principal VI', '2025-01-29 04:35:35'),
+(29, 'Principal VII', '2025-01-29 04:35:35'),
+(30, 'Principal VIII', '2025-01-29 04:35:35'),
+(31, 'Principal IX', '2025-01-29 04:35:35'),
+(32, 'Principal X', '2025-01-29 04:35:35'),
+(33, 'Principal XI', '2025-01-29 04:35:35'),
+(34, 'Principal XII', '2025-01-29 04:35:35'),
+(35, 'Principal XIII', '2025-01-29 04:35:35'),
+(36, 'Principal XIV', '2025-01-29 04:35:35'),
+(37, 'Principal XV', '2025-01-29 04:35:35'),
+(38, 'Principal XVI', '2025-01-29 04:35:35'),
+(39, 'Principal XVII', '2025-01-29 04:35:35'),
+(40, 'Principal XVIII', '2025-01-29 04:35:35'),
+(41, 'Principal XIX', '2025-01-29 04:35:35'),
+(42, 'Principal XX', '2025-01-29 04:35:35'),
+(43, 'Principal XXI', '2025-01-29 04:35:35'),
+(44, 'Principal XXII', '2025-01-29 04:35:35'),
+(45, 'Principal XXIII', '2025-01-29 04:35:35'),
+(46, 'Principal XXIV', '2025-01-29 04:35:35'),
+(47, 'Principal XXV', '2025-01-29 04:35:35'),
+(48, 'Principal XXVI', '2025-01-29 04:35:35'),
+(49, 'Principal XXVII', '2025-01-29 04:35:35'),
+(50, 'Principal XXVIII', '2025-01-29 04:35:35'),
+(51, 'Principal XXIX', '2025-01-29 04:35:35'),
+(52, 'Principal XXX', '2025-01-29 04:35:35'),
+(53, 'Principal XXXI', '2025-01-29 04:35:35'),
+(54, 'Principal XXXII', '2025-01-29 04:35:35'),
+(55, 'Principal XXXIII', '2025-01-29 04:35:35'),
+(56, 'Principal XXXIV', '2025-01-29 04:35:35'),
+(57, 'Principal XXXV', '2025-01-29 04:35:35'),
+(58, 'Principal XXXVI', '2025-01-29 04:35:35'),
+(59, 'Principal XXXVII', '2025-01-29 04:35:35'),
+(60, 'Principal XXXVIII', '2025-01-29 04:35:35'),
+(61, 'Principal XXXIX', '2025-01-29 04:35:35'),
+(62, 'Principal XL', '2025-01-29 04:35:35'),
+(63, 'Principal XLI', '2025-01-29 04:35:35'),
+(64, 'Principal XLII', '2025-01-29 04:35:35'),
+(65, 'Principal XLIII', '2025-01-29 04:35:35'),
+(66, 'Principal XLIV', '2025-01-29 04:35:35'),
+(67, 'Principal XLV', '2025-01-29 04:35:35'),
+(68, 'Principal XLVI', '2025-01-29 04:35:35'),
+(69, 'Principal XLVII', '2025-01-29 04:35:35'),
+(70, 'Principal XLVIII', '2025-01-29 04:35:35'),
+(71, 'Principal XLIX', '2025-01-29 04:35:35'),
+(72, 'Principal L', '2025-01-29 04:35:35'),
+(73, 'Principal LI', '2025-01-29 04:35:35'),
+(74, 'Principal LII', '2025-01-29 04:35:35'),
+(75, 'Principal LIII', '2025-01-29 04:35:35'),
+(76, 'Principal LIV', '2025-01-29 04:35:35'),
+(77, 'Principal LV', '2025-01-29 04:35:35'),
+(78, 'Principal LVI', '2025-01-29 04:35:35'),
+(79, 'Principal LVII', '2025-01-29 04:35:35'),
+(80, 'Principal LVIII', '2025-01-29 04:35:35'),
+(81, 'Principal LIX', '2025-01-29 04:35:35'),
+(82, 'Principal LX', '2025-01-29 04:35:35'),
+(83, 'Principal LXI', '2025-01-29 04:35:35'),
+(84, 'Principal LXII', '2025-01-29 04:35:35'),
+(85, 'Principal LXIII', '2025-01-29 04:35:35'),
+(86, 'Principal LXIV', '2025-01-29 04:35:35'),
+(87, 'Principal LXV', '2025-01-29 04:35:35'),
+(88, 'Principal LXVI', '2025-01-29 04:35:35'),
+(89, 'Principal LXVII', '2025-01-29 04:35:35'),
+(90, 'Principal LXVIII', '2025-01-29 04:35:35'),
+(91, 'Principal LXIX', '2025-01-29 04:35:35'),
+(92, 'Principal LXX', '2025-01-29 04:35:35'),
+(93, 'Principal LXXI', '2025-01-29 04:35:35'),
+(94, 'Principal LXXII', '2025-01-29 04:35:35'),
+(95, 'Principal LXXIII', '2025-01-29 04:35:35'),
+(96, 'Principal LXXIV', '2025-01-29 04:35:35'),
+(97, 'Principal LXXV', '2025-01-29 04:35:35'),
+(98, 'Principal LXXVI', '2025-01-29 04:35:35'),
+(99, 'Principal LXXVII', '2025-01-29 04:35:35'),
+(100, 'Principal LXXVIII', '2025-01-29 04:35:35'),
+(101, 'Principal LXXIX', '2025-01-29 04:35:35'),
+(102, 'Principal LXXX', '2025-01-29 04:35:35'),
+(103, 'Principal LXXXI', '2025-01-29 04:35:35'),
+(104, 'Principal LXXXII', '2025-01-29 04:35:35'),
+(105, 'Principal LXXXIII', '2025-01-29 04:35:35'),
+(106, 'Principal LXXXIV', '2025-01-29 04:35:35'),
+(107, 'Principal LXXXV', '2025-01-29 04:35:35'),
+(108, 'Principal LXXXVI', '2025-01-29 04:35:35'),
+(109, 'Principal LXXXVII', '2025-01-29 04:35:35'),
+(110, 'Principal LXXXVIII', '2025-01-29 04:35:35'),
+(111, 'Principal LXXXIX', '2025-01-29 04:35:35'),
+(112, 'Principal XC', '2025-01-29 04:35:35'),
+(113, 'Principal XCI', '2025-01-29 04:35:35'),
+(114, 'Principal XCII', '2025-01-29 04:35:35');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `schools`
+--
+
+CREATE TABLE `schools` (
+  `id` int(11) NOT NULL,
+  `empAssignSchool` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `schools`
+--
+
+INSERT INTO `schools` (`id`, `empAssignSchool`, `created_at`) VALUES
+(1, 'Dawis Elementary School', '2025-01-29 04:37:06'),
+(2, 'Dawis National High School', '2025-01-29 04:37:06'),
+(3, 'Bayawan City East Central School', '2025-01-29 04:37:06'),
+(4, 'A. AGARPAW MEMORIAL HIGH SCHOOL', '2025-01-30 22:14:37'),
+(5, 'BONGALONAN ES', '2025-01-30 22:15:20'),
+(6, 'TIABANAN VALLEY ES', '2025-01-30 22:15:30'),
+(7, 'CABIGTIAN ES', '2025-01-30 22:15:40'),
+(8, 'BAL-OS HS', '2025-01-30 22:15:48'),
+(9, 'CABATUANAN ES', '2025-01-30 22:15:56'),
+(10, 'MAGLINAO HS', '2025-01-30 22:16:06'),
+(11, 'MAGLINAO ES', '2025-01-30 22:16:14'),
+(12, 'MONSALE ES', '2025-01-30 22:16:22'),
+(13, 'BASAY CS', '2025-01-30 22:16:28'),
+(14, 'OLANDAO ES', '2025-01-30 22:16:38'),
+(15, 'LINANTAYAN ES', '2025-01-30 22:16:47'),
+(16, 'CABALAYONGAN ES', '2025-01-30 22:16:56'),
+(17, 'DATAG ES', '2025-01-30 22:17:06'),
+(18, 'DON PABLO MES', '2025-01-30 22:17:13'),
+(19, 'ACTIN HS', '2025-01-30 22:17:19'),
+(20, 'CCFMES', '2025-01-30 22:17:27'),
+(21, 'BASAY HS', '2025-01-30 22:17:32'),
+(22, 'KALUMPANG ES', '2025-01-30 22:17:38'),
+(23, 'DITA ES', '2025-01-30 22:17:43'),
+(24, 'TABUAN PCHS', '2025-01-30 22:17:49'),
+(25, 'UPPER DATONG ES', '2025-01-30 22:17:56'),
+(26, 'LUNOY ES', '2025-01-30 22:18:03'),
+(27, 'TABUAN ES', '2025-01-30 22:18:08'),
+(28, 'UBAN-UBAN ES', '2025-01-30 22:18:16'),
+(29, 'COGON PS', '2025-01-30 22:18:29'),
+(30, 'DAMIG ES', '2025-01-30 22:18:34'),
+(31, 'KALUMBOYAN HS', '2025-01-30 22:18:41'),
+(32, 'KALUMBOYAN ES', '2025-01-30 22:18:49'),
+(33, 'CADAL-UGAN ES', '2025-01-30 22:18:58'),
+(34, 'ABUNDIO MHS', '2025-01-30 22:19:07'),
+(35, 'BAISAN ES', '2025-01-30 22:19:14'),
+(36, 'BAHIAN ES', '2025-01-30 22:19:20'),
+(37, 'DAWIS HS', '2025-01-30 22:19:26'),
+(38, 'DAWIS ES', '2025-01-30 22:19:30'),
+(39, 'ALI-IS INTEGRATED', '2025-01-30 22:19:39'),
+(40, 'ALI-IS ES', '2025-01-30 22:19:48'),
+(41, 'GAMAO ES', '2025-01-30 22:19:53'),
+(42, 'HOLY FAMILY ES', '2025-01-30 22:20:01'),
+(43, 'ATILANO B. CABANGAL MHS', '2025-01-30 22:20:14'),
+(44, 'KASLA ES', '2025-01-30 22:20:20'),
+(45, 'NARRA HS', '2025-01-30 22:20:28'),
+(46, 'GUISOCON ES', '2025-01-30 22:20:35'),
+(47, 'TERONG PS', '2025-01-30 22:20:40'),
+(48, 'MATUNOY ES', '2025-01-30 22:20:46'),
+(49, 'MAGSULAY ES', '2025-01-30 22:20:54'),
+(50, 'ANTONIO M. LACSON MHS', '2025-01-30 22:21:03'),
+(51, 'TAVERA ES', '2025-01-30 22:21:12'),
+(52, 'NAGKA ES', '2025-01-30 22:21:19'),
+(53, 'SAN JOSE HS', '2025-01-30 22:21:26'),
+(54, 'SAN JOSE ES', '2025-01-30 22:21:32'),
+(55, 'LAPAY HS', '2025-01-30 22:21:39'),
+(56, 'LAPAY ES', '2025-01-30 22:21:44'),
+(57, 'KANGKAWIT ES', '2025-01-30 22:21:55'),
+(58, 'BUGAY HS', '2025-01-30 22:22:01'),
+(59, 'BUGAY ES', '2025-01-30 22:22:11'),
+(60, 'BAICAN ES', '2025-01-30 22:22:19'),
+(61, 'BANAYBANAY HS', '2025-01-30 22:22:34'),
+(62, 'BANAYBANAY ES', '2025-01-30 22:22:39'),
+(63, 'BOKAW ES', '2025-01-30 22:22:45'),
+(64, 'MANDUAW HS', '2025-01-30 22:22:51'),
+(65, 'MANDUAW ES', '2025-01-30 22:22:57'),
+(66, 'VILLASOL HS', '2025-01-30 22:23:03'),
+(67, 'VILLASOL ES', '2025-01-30 22:23:09'),
+(68, 'KALAMTUKAN HS', '2025-01-30 22:23:20'),
+(69, 'KALAMTUKAN ES', '2025-01-30 22:23:35'),
+(70, 'GUINTANA-AN ES', '2025-01-30 22:23:48'),
+(71, 'HAG-UM ES', '2025-01-30 22:23:57'),
+(72, 'NAPO ES', '2025-01-30 22:24:03'),
+(73, 'CANABUAN ES', '2025-01-30 22:24:08'),
+(74, 'SAN MIGUEL ES', '2025-01-30 22:24:14'),
+(75, 'SAN ROQUE ES', '2025-01-30 22:24:20'),
+(76, 'TAYAWAN HS', '2025-01-30 22:24:27'),
+(77, 'TAYAWAN ES', '2025-01-30 22:24:32'),
+(78, 'MINABA HS', '2025-01-30 22:24:38'),
+(79, 'MINABA ES', '2025-01-30 22:24:43'),
+(80, 'BCSTEC HS', '2025-01-30 22:24:56'),
+(81, 'BCSTEC ES', '2025-01-30 22:25:04'),
+(82, 'CANSIG-ID ES', '2025-01-30 22:25:11'),
+(83, 'BAYAWAN NATIONAL HIGH SCHOOL(BNHS)', '2025-01-30 22:25:34'),
+(84, 'BULI-BULI ES', '2025-01-30 22:25:40'),
+(85, 'PAGATBAN HS', '2025-01-30 22:25:52'),
+(86, 'HBIDOJMES', '2025-01-30 22:25:59'),
+(87, 'MALABUGAS HS', '2025-01-30 22:26:07'),
+(88, 'TGMES', '2025-01-30 22:26:11'),
+(89, 'DEAN FELIX MES', '2025-01-30 22:26:20'),
+(90, 'BANGA CENTRAL SCHOOL', '2025-01-30 22:26:27'),
+(91, 'VILLAREAL ES', '2025-01-30 22:26:34'),
+(92, 'SLGTMES', '2025-01-30 22:26:40'),
+(93, 'PUSION ES', '2025-01-30 22:26:46'),
+(94, 'BOLIROCON ES', '2025-01-30 22:26:53'),
+(95, 'OMOD HS', '2025-01-30 22:26:57'),
+(96, 'OMOD ES', '2025-01-30 22:27:03'),
+(97, 'CANSUMALIG HS', '2025-01-30 22:27:10'),
+(98, 'CANSUMALIG ES', '2025-01-30 22:27:15');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subjects`
+--
+
+CREATE TABLE `subjects` (
+  `id` int(11) NOT NULL,
+  `empTeachingSubject` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `subjects`
+--
+
+INSERT INTO `subjects` (`id`, `empTeachingSubject`, `created_at`) VALUES
+(1, 'FILIPINO V', '2025-01-29 04:38:37'),
+(2, 'FILIPINO III', '2025-01-29 04:38:37'),
+(3, 'FILIPINO II', '2025-01-29 04:38:37'),
+(4, 'FILIPINO I', '2025-01-29 04:38:37'),
+(5, 'ENGLISH I ', '2025-01-29 05:56:16'),
+(6, 'ENGLISH II', '2025-01-29 05:56:28'),
+(7, 'ENGLISH III', '2025-01-29 05:56:37'),
+(8, 'ENGLISH IV', '2025-01-29 05:56:50'),
+(9, 'ENGLISH V', '2025-01-29 05:56:56'),
+(10, 'SCIENCE I', '2025-01-29 05:57:08'),
+(11, 'SCIENCE II', '2025-01-29 05:57:14'),
+(12, 'SCIENCE III', '2025-01-29 05:57:21'),
+(13, 'SCIENCE IV', '2025-01-29 05:57:28'),
+(14, 'SCIENCE V', '2025-01-29 05:57:34'),
+(15, 'ASST. SCHOOL HEAD-NO ASSIGN SUBJECT TAUGHT', '2025-01-29 06:18:58'),
+(16, 'FILIPINO', '2025-01-29 06:21:24'),
+(17, 'MATHEMATICS', '2025-01-29 06:21:24'),
+(18, 'ENGLISH', '2025-01-29 06:21:39'),
+(19, 'SCIENCE', '2025-01-29 06:21:39'),
+(20, 'SCIENCE VI', '2025-01-29 09:09:10'),
+(21, 'HELE V', '2025-01-29 09:09:10'),
+(22, 'HELE IV', '2025-01-29 09:09:22'),
+(23, 'HELE VI', '2025-01-29 09:09:22'),
+(24, 'ENGLISH VI', '2025-01-29 09:10:13'),
+(25, 'FILIPINO 4', '2025-01-30 22:28:20'),
+(26, 'ABM ELECTIVE', '2025-01-30 22:28:29'),
+(27, 'SUBSTITUTE TEACHER', '2025-01-30 22:28:39'),
+(28, 'ALS', '2025-01-30 22:28:44'),
+(29, 'MIL', '2025-01-30 22:28:48'),
+(30, 'SMAW 11', '2025-01-30 22:28:55'),
+(31, 'IMMERSION', '2025-01-30 22:29:01'),
+(32, 'TVL-7', '2025-01-30 22:29:06'),
+(33, 'PHILIPPINE POLITICS AND GOVT.', '2025-01-30 22:29:16'),
+(34, 'GUIDANCE COUNSELOR', '2025-01-30 22:29:26'),
+(35, 'SICK LEAVE', '2025-01-30 22:29:32'),
+(36, 'COOKERY', '2025-01-30 22:29:43'),
+(37, 'BEAUTY CARE', '2025-01-30 22:29:50'),
+(38, 'INQUIRES, INVESTIGATION AND IMMERSION', '2025-01-30 22:30:03'),
+(39, 'INQUIRIES-12 GAS', '2025-01-30 22:30:13'),
+(40, 'MOTHER TONGUE - 3', '2025-01-30 22:30:24'),
+(41, 'BASIC COMP.', '2025-01-30 22:30:31'),
+(42, 'INTRO TO PHILOSOPHY OF HUMAN', '2025-01-30 22:30:41'),
+(43, 'BPP-2- PREPARE AND PRODUCE PASTRY PRODUCTS', '2025-01-30 22:31:02'),
+(44, 'BPP-1- BASIC COMMON COMPETENCIES', '2025-01-30 22:31:14'),
+(45, 'FBS-4 - ROOM SERVICE', '2025-01-30 22:31:25'),
+(46, 'FBS-3- PROMOTE FOOD AND BEVERAGE PRODUCTS', '2025-01-30 22:31:45'),
+(47, 'FBS-2-WELCOME GUEST AND TAKE ORDER', '2025-01-30 22:31:58'),
+(48, 'FBS-1- PREPARE DINING ROOM', '2025-01-30 22:32:08'),
+(49, 'NATURAL SCIENCE II', '2025-01-30 22:32:17'),
+(50, 'AP4', '2025-01-30 22:32:23'),
+(51, 'WORLD RELIGION', '2025-01-30 22:32:29'),
+(52, 'MATH - 12', '2025-01-30 22:32:35'),
+(53, 'CREATIVE WRITING', '2025-01-30 22:32:42'),
+(54, 'AIS4', '2025-01-30 22:32:50'),
+(55, 'AIS3', '2025-01-30 22:32:54'),
+(56, 'AIS2', '2025-01-30 22:32:59'),
+(57, 'AIS1', '2025-01-30 22:33:02'),
+(58, 'ENGLISH FRO ACADEMIC AND PROFESIONAL PURPOSE', '2025-01-30 22:33:35'),
+(59, 'NO SUBJECT HANDLED', '2025-01-30 22:33:44'),
+(60, 'SAFETY MEASURES OF FARM TOOLS AND EQUIPT.', '2025-01-30 22:33:55'),
+(61, 'DISCIPLINE & IDEAS IN SOCIAL SCIENCE', '2025-01-30 22:34:12'),
+(62, 'ORGANIZATION & MANAGEMENT', '2025-01-30 22:34:21'),
+(63, 'PRINCIPLES OF MARKETING', '2025-01-30 22:34:29'),
+(64, 'BUSINESS MATH', '2025-01-30 22:34:36'),
+(65, 'TLE-7', '2025-01-30 22:34:41'),
+(66, 'CONTEMPORARY ARTS', '2025-01-30 22:34:49'),
+(67, 'LITERATURE', '2025-01-30 22:34:54'),
+(68, 'TVL-12', '2025-01-30 22:34:59'),
+(69, 'TVL-11', '2025-01-30 22:35:04'),
+(70, 'ICT-10', '2025-01-30 22:35:09'),
+(71, 'ICT-9', '2025-01-30 22:35:19'),
+(72, 'PRODUCE ORGANIC VEGETABLES', '2025-01-30 22:35:32'),
+(73, 'UCSP -11', '2025-01-30 22:48:25'),
+(74, 'PAGBASA 11', '2025-01-30 22:48:31'),
+(75, 'PHYSICAL SCIENCE', '2025-01-30 22:48:39'),
+(76, 'DRRR', '2025-01-30 22:48:44'),
+(77, 'INVESTIGATION & IMMERSION', '2025-01-30 22:48:55'),
+(78, 'BIOLOGY', '2025-01-30 22:49:01'),
+(79, 'STATISTICS', '2025-01-30 22:49:09'),
+(80, 'MEDIA & INFORMATION', '2025-01-30 22:49:21'),
+(81, 'STAT & PROBABILITY', '2025-01-30 22:49:32'),
+(82, 'OAP XII', '2025-01-30 22:49:39'),
+(83, 'POF', '2025-01-30 22:49:44'),
+(84, 'VALUES', '2025-01-30 22:49:48'),
+(85, 'PVCE', '2025-01-30 22:49:53'),
+(86, 'POV', '2025-01-30 22:49:57'),
+(87, 'ROH', '2025-01-30 22:50:03'),
+(88, 'PHYSICS 1', '2025-01-30 22:50:09'),
+(89, 'GENERAL CHEMISTRY', '2025-01-30 22:50:20'),
+(90, 'READING & WRITING', '2025-01-30 22:50:30'),
+(91, 'PRE-CAL', '2025-01-30 22:50:36'),
+(92, 'REMEDIAL INSTRUCTIONS', '2025-01-30 22:50:47'),
+(93, 'PAGBASA AT PAGSUSURI NG TEKSTO 12', '2025-01-30 22:50:59'),
+(94, 'EAPP 12', '2025-01-30 22:51:04'),
+(95, 'RAISE ORGANIC HOGS 12', '2025-01-30 22:51:12'),
+(96, 'AP2', '2025-01-30 22:51:17'),
+(97, 'AP1', '2025-01-30 22:51:21'),
+(98, 'PERSONAL DEVELOPMENT', '2025-01-30 22:51:29'),
+(99, 'BPP2', '2025-01-30 22:51:33'),
+(100, 'BPP1', '2025-01-30 22:51:37'),
+(101, 'TVL4', '2025-01-30 22:51:43'),
+(102, 'TVL 3', '2025-01-30 22:51:49'),
+(103, 'TVL 2', '2025-01-30 22:51:54'),
+(104, 'TVL 1', '2025-01-30 22:51:57'),
+(105, 'HOUSEKEEPING 3 NCII', '2025-01-30 22:52:15'),
+(106, 'HOUSEKEEPING 1/4 NCII', '2025-01-30 22:52:24'),
+(107, 'HOUSEKEEPING 2 NCII', '2025-01-30 22:52:33'),
+(108, 'HOUSEKEEPING 1 NCII', '2025-01-30 22:52:41'),
+(109, 'FOOD PROCESSING 2', '2025-01-30 22:52:48'),
+(110, 'EMPO TECH 12', '2025-01-30 22:52:56'),
+(111, 'FILIPINO SA PILING LARANGAN', '2025-01-30 22:53:06'),
+(112, 'HAIRDRESSING 3-G11', '2025-01-30 22:53:16'),
+(113, 'HAIRDRESSING 6-G11', '2025-01-30 22:53:44'),
+(114, 'HAIRDRESSING 2 G11', '2025-01-30 22:53:53'),
+(115, 'HAIRDRESSING 5 G12', '2025-01-30 22:54:03'),
+(116, 'HAIRDRESSING 4 G12', '2025-01-30 22:54:11'),
+(117, 'HAIRDRESSING 1 G11', '2025-01-30 22:54:18'),
+(118, 'ENGLISH - 12', '2025-01-30 22:56:13'),
+(119, 'CARPENTRY 2-G11', '2025-01-30 22:56:29'),
+(120, 'CARPENTRY 7-G12', '2025-01-30 22:56:36'),
+(121, 'CARPENTRY 3-G11', '2025-01-30 22:56:43'),
+(122, 'CARPENTRY 6 G11', '2025-01-30 22:56:50'),
+(123, 'CARPENTRY 5 G12', '2025-01-30 22:56:57'),
+(124, 'CARPENTRY 4-G12', '2025-01-30 22:57:03'),
+(125, 'CARPENTRY 1 G11', '2025-01-30 22:57:10'),
+(126, 'ANIMAL PRODUCTION 7', '2025-01-30 22:57:21'),
+(127, 'ANIMAL PRODUCTION 9', '2025-01-30 22:57:28'),
+(128, 'ICT 8', '2025-01-30 22:57:44'),
+(129, 'ICT 7', '2025-01-30 22:57:54'),
+(130, 'TLE 12', '2025-01-30 22:58:09'),
+(131, 'TLE 11', '2025-01-30 22:58:14'),
+(132, 'FILIPINO 11', '2025-01-30 22:58:19'),
+(133, 'P.E 12', '2025-01-30 22:58:24'),
+(134, 'P.E 11', '2025-01-30 22:58:30'),
+(135, 'TVL/DISCIPLINE & IDEAS 12', '2025-01-30 22:58:40'),
+(136, 'MOTHER TONGUE 1', '2025-01-30 22:58:47'),
+(137, 'LIBRARIAN', '2025-01-30 22:58:52'),
+(138, 'LIS, LRMDS', '2025-01-30 22:59:02'),
+(139, 'OAP 7', '2025-01-30 22:59:08'),
+(140, 'OAP 2', '2025-01-30 22:59:16'),
+(141, 'OAP 6', '2025-01-30 22:59:20'),
+(142, 'OAP 1', '2025-01-30 22:59:24'),
+(143, 'OAP 5', '2025-01-30 22:59:28'),
+(144, 'OAP 4', '2025-01-30 22:59:32'),
+(145, 'EARTH AND LIFE SCIENCE', '2025-01-30 22:59:44'),
+(146, 'INFO TO PHILO', '2025-01-30 22:59:51'),
+(147, 'EMPOWERMENT', '2025-01-30 22:59:57'),
+(148, 'UNDERSTANDING CULTURE II', '2025-01-30 23:00:06'),
+(149, 'GENERAL MATHEMATICS', '2025-01-30 23:00:13'),
+(150, 'PREP/CONSELTATION', '2025-01-30 23:00:24'),
+(151, 'ON MATERNITY LEAVE', '2025-01-30 23:00:31'),
+(152, 'SHS CORE & APPLIED SUBJECTS', '2025-01-30 23:00:41'),
+(153, 'P.E & HEALTH', '2025-01-30 23:00:52'),
+(154, 'BAKER/PASTRY', '2025-01-30 23:01:00'),
+(155, 'ENTREPNEURSHIP', '2025-01-30 23:01:15'),
+(156, 'FILIPINO SA PILING LARANG', '2025-01-30 23:01:28'),
+(157, 'KOMUNIKASYON AT PANANALIKSIK', '2025-01-30 23:01:39'),
+(158, 'PHYSICAL EDUCATION', '2025-01-30 23:01:46'),
+(159, 'ORAL COMMUNICATION', '2025-01-30 23:01:54'),
+(160, 'STAKE OUT BUILDING LINES', '2025-01-30 23:02:04'),
+(161, 'COMMON COMPETENCIES', '2025-01-30 23:02:17'),
+(162, 'BASIC COMPETENCIES', '2025-01-30 23:02:25'),
+(163, 'VALUES 9', '2025-01-30 23:02:30'),
+(164, 'MAPEH 10', '2025-01-30 23:02:37'),
+(165, 'VALUES 8', '2025-01-30 23:02:41'),
+(166, 'VALUES 7', '2025-01-30 23:02:48'),
+(167, 'TLE 10', '2025-01-30 23:02:52'),
+(168, 'FILIPINO 10', '2025-01-30 23:02:57'),
+(169, 'CROP PRODUCTION', '2025-01-30 23:03:03'),
+(170, 'RESEARCH 11', '2025-01-30 23:03:08'),
+(171, 'MATH 11', '2025-01-30 23:03:12'),
+(172, 'ESP 7', '2025-01-30 23:03:18'),
+(173, 'ARAL PAN 7', '2025-01-30 23:03:24'),
+(174, 'ARAL PAN 8', '2025-01-30 23:03:28'),
+(175, 'SCIENCE 7', '2025-01-30 23:03:34'),
+(176, 'TLE 7', '2025-01-30 23:03:38'),
+(177, 'OAP 2', '2025-01-30 23:03:49'),
+(178, 'FARM TOOLS 11', '2025-01-30 23:03:54'),
+(179, 'ORGANIC VEGETABLES', '2025-01-30 23:04:04'),
+(180, 'ORGANIC FERTILIZER', '2025-01-30 23:04:11'),
+(181, 'ORGANIC HOG', '2025-01-30 23:04:17'),
+(182, 'FARM SAFETY', '2025-01-30 23:04:25'),
+(183, 'TLE 8', '2025-01-30 23:04:30'),
+(184, 'CONCOCTION 12', '2025-01-30 23:04:40'),
+(185, 'PHILO', '2025-01-30 23:04:45'),
+(186, 'PE', '2025-01-30 23:04:49'),
+(187, 'KOMUNIKASYON 11', '2025-01-30 23:04:59'),
+(188, 'ARAL COM.', '2025-01-30 23:05:04'),
+(189, 'EMPOWERMENT TECHNOLOGY', '2025-01-30 23:05:12'),
+(190, '21ST CENTURY 11', '2025-01-30 23:05:18'),
+(191, 'FILIPINO 12', '2025-01-30 23:05:23'),
+(192, 'GEN. MATH 11', '2025-01-30 23:05:35'),
+(193, 'EARTH & LIFE SCIENCE 11', '2025-01-30 23:05:47'),
+(194, 'PRACTICAL RESEARCH 2', '2025-01-30 23:05:54'),
+(195, 'MAPEH 8', '2025-01-30 23:06:00'),
+(196, 'MATH 10', '2025-01-30 23:06:06'),
+(197, 'MATH 8', '2025-01-30 23:06:12'),
+(198, 'MATH 10', '2025-01-30 23:06:18'),
+(199, 'ESP 8', '2025-01-30 23:06:28'),
+(200, 'FILIPINO 7', '2025-01-30 23:06:35'),
+(201, 'FILIPINO 9', '2025-01-30 23:06:41'),
+(202, 'FILIPINO 8', '2025-01-30 23:06:48'),
+(203, 'MAPEH 7', '2025-01-30 23:06:56'),
+(204, 'MAPEH 9', '2025-01-30 23:07:04'),
+(205, 'MATH 7', '2025-01-30 23:07:13'),
+(206, 'SCIENCE 8', '2025-01-30 23:07:20'),
+(207, 'TLE 9', '2025-01-30 23:07:29'),
+(208, 'MAPEH 9', '2025-01-30 23:07:48'),
+(209, 'ESP 9', '2025-01-30 23:07:52'),
+(210, 'ENGLISH 8', '2025-01-30 23:08:02'),
+(211, 'ENGLISH 9', '2025-01-30 23:08:21'),
+(212, 'ESP 10', '2025-01-30 23:08:27'),
+(213, 'ARAL PAN 10', '2025-01-30 23:08:34'),
+(214, 'ARAL PAN 9', '2025-01-30 23:08:39'),
+(215, 'SCIENCE 9', '2025-01-30 23:08:45'),
+(216, 'SCIENCE 10', '2025-01-30 23:08:50'),
+(217, 'ENGLISH 10', '2025-01-30 23:08:57'),
+(218, 'NO SUBJECT TAUGHT', '2025-01-30 23:09:07'),
+(219, 'SCIENCE AND HEALTH', '2025-01-30 23:09:21'),
+(220, 'CHAR.ED.', '2025-01-30 23:09:26'),
+(221, 'MATH', '2025-01-30 23:09:31'),
+(222, 'CHAR.ED 4', '2025-01-30 23:09:40'),
+(223, 'SIBIKA 3', '2025-01-30 23:09:44'),
+(224, 'CHAR.ED 3', '2025-01-30 23:09:52'),
+(225, 'EKAWP 6', '2025-01-30 23:10:00'),
+(226, 'SPED HI AND OTHER DISSABILITIES', '2025-01-30 23:10:11'),
+(227, 'SPED VISUALLY IMPAIRED TEACHER', '2025-01-30 23:10:21'),
+(228, 'EKAWP 4', '2025-01-30 23:10:26'),
+(229, 'EKAWP 5', '2025-01-30 23:10:32'),
+(230, 'SCIENCE 6', '2025-01-30 23:10:38'),
+(231, 'ESP 2', '2025-01-30 23:10:46'),
+(232, 'EPP 2', '2025-01-30 23:10:54'),
+(233, 'EPP 3', '2025-01-30 23:11:00'),
+(234, 'EPP 2', '2025-01-30 23:11:05'),
+(235, 'HEKASI 2', '2025-01-30 23:11:10'),
+(236, 'HEKASI 6', '2025-01-30 23:11:16'),
+(237, 'P.E 3', '2025-01-30 23:11:22'),
+(238, 'HEALTH 3', '2025-01-30 23:11:26'),
+(239, 'ARTS 3', '2025-01-30 23:11:30'),
+(240, 'MUSIC 3', '2025-01-30 23:11:35'),
+(241, 'READING 3', '2025-01-30 23:11:39'),
+(242, 'HEKASI 3', '2025-01-30 23:11:45'),
+(243, 'MAPEH 3', '2025-01-30 23:11:51'),
+(244, 'ARAL PAN 3', '2025-01-30 23:11:56'),
+(245, 'MTB 3', '2025-01-30 23:12:06'),
+(246, 'EPP 4', '2025-01-30 23:12:11'),
+(247, 'MAPEH 4', '2025-01-30 23:12:17'),
+(248, 'ESP 4', '2025-01-30 23:12:23'),
+(249, 'MAPEH 5', '2025-01-30 23:12:31'),
+(250, 'ARAL PAN 5', '2025-01-30 23:12:37'),
+(251, 'MAPEH 6', '2025-01-30 23:12:43'),
+(252, 'ARAL PAN 6', '2025-01-30 23:12:48'),
+(253, 'MAPEH 2', '2025-01-30 23:12:56'),
+(254, 'SCIENCE 2', '2025-01-30 23:13:04'),
+(255, 'ARAL PAN 2', '2025-01-30 23:13:08'),
+(256, 'MATH 2', '2025-01-30 23:13:13'),
+(257, 'ENGLISH 2', '2025-01-30 23:13:18'),
+(258, 'FILIPINO 2', '2025-01-30 23:13:31'),
+(259, 'MTB 2', '2025-01-30 23:13:35'),
+(260, 'MAKABAYAN 3', '2025-01-30 23:13:40'),
+(261, 'FILIPINO 3', '2025-01-30 23:13:46'),
+(262, 'SCIENCE 3', '2025-01-30 23:13:51'),
+(263, 'MATH 3', '2025-01-30 23:13:55'),
+(264, 'MSEP 3', '2025-01-30 23:13:59'),
+(265, 'MAPEH VI', '2025-01-30 23:14:07'),
+(266, 'EPP VI', '2025-01-30 23:14:12'),
+(267, 'ESP VI', '2025-01-30 23:14:17'),
+(268, 'MAPEH 1', '2025-01-30 23:14:23'),
+(269, 'SCIENCE 1', '2025-01-30 23:14:28'),
+(270, 'ARAL PAN 1', '2025-01-30 23:14:33'),
+(271, 'MATH 1', '2025-01-30 23:14:39'),
+(272, 'ENGLISH 1', '2025-01-30 23:14:45'),
+(273, 'FILIPINO 1', '2025-01-30 23:14:52'),
+(274, 'MTB 1', '2025-01-30 23:14:57'),
+(275, 'ESP 1', '2025-01-30 23:15:05'),
+(276, 'ESP III', '2025-01-30 23:15:11'),
+(277, 'ENGLISH III', '2025-01-30 23:15:17'),
+(278, 'HEKASI IV', '2025-01-30 23:15:24'),
+(279, 'EPP V', '2025-01-30 23:15:28'),
+(280, 'MATH VI', '2025-01-30 23:15:32'),
+(281, 'EKAWP', '2025-01-30 23:15:36'),
+(282, 'EPP', '2025-01-30 23:15:41'),
+(283, 'MATH IV', '2025-01-30 23:15:45'),
+(284, 'ARAL PAN 4', '2025-01-30 23:15:51'),
+(285, 'MAKABAYAN', '2025-01-30 23:16:01'),
+(286, 'HEKASI V', '2025-01-30 23:16:08'),
+(287, 'HEKASI', '2025-01-30 23:16:12'),
+(288, 'KINDER', '2025-01-30 23:16:17'),
+(289, 'SPED', '2025-01-30 23:16:22'),
+(290, 'MATH V', '2025-01-30 23:16:26'),
+(291, 'MSEP VI', '2025-01-30 23:16:31'),
+(292, 'MSEP V', '2025-01-30 23:16:43'),
+(293, 'MSEP IV', '2025-01-30 23:16:47'),
+(294, 'FILIPINO VI', '2025-01-30 23:16:53'),
+(295, 'FILIPINO V', '2025-01-30 23:16:59'),
+(296, 'FILIPINO IV', '2025-01-30 23:17:07'),
+(297, 'ENGLISH V', '2025-01-30 23:17:13'),
+(298, 'FILIPINO VI', '2025-01-30 23:17:20'),
+(299, 'ESP V', '2025-01-30 23:17:24'),
+(300, 'SCIENCE V', '2025-01-30 23:17:30'),
+(301, 'MSEP V', '2025-01-30 23:17:38'),
+(302, 'MATH V', '2025-01-30 23:17:43'),
+(303, 'HELE VI', '2025-01-30 23:17:49'),
+(304, 'HELE V', '2025-01-30 23:17:54'),
+(305, 'HELE IV', '2025-01-30 23:18:03'),
+(306, 'SCIENCE VI', '2025-01-30 23:18:07'),
+(307, 'SCIENCE V', '2025-01-30 23:18:14'),
+(308, 'ENGLISH VI', '2025-01-30 23:18:28'),
+(309, 'SCIENCE IV', '2025-01-30 23:18:32'),
+(310, 'ENGLISH 4', '2025-01-30 23:18:38'),
+(311, 'SCHOOL HEAD - NO ASSIGN SUBJECT TAUGHT', '2025-01-30 23:18:53'),
+(312, 'TLE', '2025-01-30 23:18:57'),
+(313, 'MSEP', '2025-01-30 23:19:00'),
+(314, 'HELE', '2025-01-30 23:19:04'),
+(315, 'AP', '2025-01-30 23:19:08'),
+(316, 'MAPEH', '2025-01-30 23:19:12'),
+(317, 'SCIENCE', '2025-01-30 23:19:16'),
+(318, 'MTB', '2025-01-30 23:19:22'),
+(319, 'ESP', '2025-01-30 23:19:26'),
+(320, 'FILIPINO', '2025-01-30 23:19:32'),
+(321, 'MATHEMATICS', '2025-01-30 23:19:39'),
+(322, 'ENGLISH', '2025-01-30 23:19:43');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `created_at`) VALUES
+(1, 'admin', '$2y$10$Xj1dpMIfPBFojGUyib9Rz.liKBvnJQuwEnVUqlAZEN0vsXqscGbzq', '2025-01-28 14:06:30');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `employees`
+--
+ALTER TABLE `employees`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `empNumber` (`empNumber`);
+
+--
+-- Indexes for table `employee_subjects`
+--
+ALTER TABLE `employee_subjects`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `employee_id` (`employee_id`),
+  ADD KEY `subject_id` (`subject_id`);
+
+--
+-- Indexes for table `logs`
+--
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `positions`
+--
+ALTER TABLE `positions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `schools`
+--
+ALTER TABLE `schools`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `subjects`
+--
+ALTER TABLE `subjects`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `employee_subjects`
+--
+ALTER TABLE `employee_subjects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT for table `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=526;
+
+--
+-- AUTO_INCREMENT for table `positions`
+--
+ALTER TABLE `positions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+
+--
+-- AUTO_INCREMENT for table `schools`
+--
+ALTER TABLE `schools`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+
+--
+-- AUTO_INCREMENT for table `subjects`
+--
+ALTER TABLE `subjects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=323;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `employee_subjects`
+--
+ALTER TABLE `employee_subjects`
+  ADD CONSTRAINT `employee_subjects_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `employee_subjects_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
