@@ -13,7 +13,18 @@ CREATE TABLE IF NOT EXISTS users (
 
 INSERT INTO users (username, password)
 VALUES
-('admin', '$2y$10$JeUc3gSg2H8WEoPSNlKFBepmXHziXB9oCUa3SpYG1H6tWmkNbaB1G');  
+('admin1', '$2y$10$JeUc3gSg2H8WEoPSNlKFBepmXHziXB9oCUa3SpYG1H6tWmkNbaB1G');  
+INSERT INTO users (username, password)
+VALUES
+('admin2', '$2y$10$JeUc3gSg2H8WEoPSNlKFBepmXHziXB9oCUa3SpYG1H6tWmkNbaB1G');  
+INSERT INTO users (username, password)
+VALUES
+('admin3', '$2y$10$JeUc3gSg2H8WEoPSNlKFBepmXHziXB9oCUa3SpYG1H6tWmkNbaB1G');  
+INSERT INTO users (username, password)
+VALUES
+('admin4', '$2y$10$JeUc3gSg2H8WEoPSNlKFBepmXHziXB9oCUa3SpYG1H6tWmkNbaB1G');  
+
+
 
 
 
@@ -41,12 +52,7 @@ INSERT INTO positions (empPosition) VALUES
 ('Master Teacher II'), 
 ('Master Teacher III'), 
 ('Master Teacher IV'), 
-('Master Teacher V'), 
-('Master Teacher VI'), 
-('Master Teacher VII'), 
-('Master Teacher VIII'), 
-('Master Teacher IX'), 
-('Master Teacher X'), 
+('Master Teacher V'), ), 
 ('Head Teacher I'), 
 ('Head Teacher II'), 
 ('Head Teacher III'), 
@@ -58,93 +64,7 @@ INSERT INTO positions (empPosition) VALUES
 ('Principal III'), 
 ('Principal IV'), 
 ('Principal V'), 
-('Principal VI'), 
-('Principal VII'), 
-('Principal VIII'), 
-('Principal IX'), 
-('Principal X'), 
-('Principal XI'), 
-('Principal XII'), 
-('Principal XIII'), 
-('Principal XIV'), 
-('Principal XV'), 
-('Principal XVI'), 
-('Principal XVII'), 
-('Principal XVIII'), 
-('Principal XIX'), 
-('Principal XX'), 
-('Principal XXI'), 
-('Principal XXII'), 
-('Principal XXIII'), 
-('Principal XXIV'), 
-('Principal XXV'), 
-('Principal XXVI'), 
-('Principal XXVII'), 
-('Principal XXVIII'), 
-('Principal XXIX'), 
-('Principal XXX'), 
-('Principal XXXI'), 
-('Principal XXXII'), 
-('Principal XXXIII'), 
-('Principal XXXIV'), 
-('Principal XXXV'), 
-('Principal XXXVI'), 
-('Principal XXXVII'), 
-('Principal XXXVIII'), 
-('Principal XXXIX'), 
-('Principal XL'), 
-('Principal XLI'), 
-('Principal XLII'), 
-('Principal XLIII'), 
-('Principal XLIV'), 
-('Principal XLV'), 
-('Principal XLVI'), 
-('Principal XLVII'), 
-('Principal XLVIII'), 
-('Principal XLIX'), 
-('Principal L'), 
-('Principal LI'), 
-('Principal LII'), 
-('Principal LIII'), 
-('Principal LIV'), 
-('Principal LV'), 
-('Principal LVI'), 
-('Principal LVII'), 
-('Principal LVIII'), 
-('Principal LIX'), 
-('Principal LX'), 
-('Principal LXI'), 
-('Principal LXII'), 
-('Principal LXIII'), 
-('Principal LXIV'), 
-('Principal LXV'), 
-('Principal LXVI'), 
-('Principal LXVII'), 
-('Principal LXVIII'), 
-('Principal LXIX'), 
-('Principal LXX'), 
-('Principal LXXI'), 
-('Principal LXXII'), 
-('Principal LXXIII'), 
-('Principal LXXIV'), 
-('Principal LXXV'), 
-('Principal LXXVI'), 
-('Principal LXXVII'), 
-('Principal LXXVIII'), 
-('Principal LXXIX'), 
-('Principal LXXX'), 
-('Principal LXXXI'), 
-('Principal LXXXII'), 
-('Principal LXXXIII'), 
-('Principal LXXXIV'), 
-('Principal LXXXV'), 
-('Principal LXXXVI'), 
-('Principal LXXXVII'), 
-('Principal LXXXVIII'), 
-('Principal LXXXIX'), 
-('Principal XC'), 
-('Principal XCI'), 
-('Principal XCII');
+('Principal VI'), ;
 
 
 CREATE TABLE IF NOT EXISTS schools (
@@ -186,4 +106,55 @@ CREATE TABLE employee_subjects (
     subject_id INT NOT NULL,
     FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE,
     FOREIGN KEY (subject_id) REFERENCES subjects(id) ON DELETE CASCADE
+);
+
+CREATE TABLE `database_backups` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `backup_name` VARCHAR(255) NOT NULL,
+  `backup_content` LONGTEXT NOT NULL,
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE backup_passcode (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    passcode_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Sample passcode '1234' 
+INSERT INTO backup_passcode (passcode_hash) VALUES 
+    ('$2y$10$NfS23H20bEblHqyZOK0w/.G//1GK5LrTpFOAFH/ngHJT2p5vj9IJK');
+
+
+
+    CREATE TABLE admin_updated_activity_logs (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    employee_id INT NOT NULL,
+    field_name VARCHAR(255) NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE admin_updated_activity_logs
+ADD COLUMN user_id INT NOT NULL AFTER id;
+
+CREATE TABLE IF NOT EXISTS trainings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    date_conducted DATE NOT NULL,
+    venue VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS employee_trainings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_id INT NOT NULL,
+    training_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+    FOREIGN KEY (training_id) REFERENCES trainings(id)
 );

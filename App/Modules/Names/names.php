@@ -1,1 +1,1 @@
-<?php $personnelNames = ['Mr. Adolf P. Aguilar', 'Windel T. Navales', 'Engr. Kurt D. Calijan']; ?>
+<?php $personnelNames = ['Mr. Adolf P. Aguilar', 'Windel T. Navales', 'Engr. Kurt D. Calijan']; $dashboard = ['ADMIN PANEL', 'SDO Bayawan Teacher Tracker - Dashboard']; $programmer =['Windel Navales']; ?>

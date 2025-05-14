@@ -7,7 +7,7 @@ try {
     $config = new \App\Config\Config();
     $dbConnection = $config->DB_CONNECTION;
 } catch (PDOException $e) {
-    error_log('Database connection failed: ' . $e->getMessage());
+    error_log('DB Failed: ' . $e->getMessage());
     die('System maintenance in progress. Please try again later.');
 }
 
@@ -33,7 +33,7 @@ const FORM_CONFIG = [
     ]
 ];
 
-// Validate session
+
 if (!isset($_SESSION['user'])) {
     header('Location: ../../index.php');
     exit;
@@ -42,7 +42,6 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 $username = $user['username'] ?? '';
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         handleFormSubmission($dbConnection, $username);
@@ -106,7 +105,7 @@ function logAction(PDO $db, string $username, string $action): void {
             ':action' => $action
         ]);
     } catch (PDOException $e) {
-        error_log('Logging failed: ' . $e->getMessage());
+        error_log('Log Fail: ' . $e->getMessage());
     }
 }
 
@@ -185,12 +184,12 @@ function setErrorMessage(string $message): void {
     <!-- Selection Dropdown -->
     <div class="d-flex justify-content-end mb-3">
         <div class="w-25">
-            <label for="manageSelectionOption" class="form-label">Select Category:</label>
+            <!-- <label for="manageSelectionOption" class="form-label">Select Category:</label> -->
             <select class="form-select" id="manageSelectionOption">
-                <option value="">-- Select Categories --</option>
-                <option value="schoolForm">Add Assign School</option>
-                <option value="positionForm">Add Position</option>
-                <option value="subjectForm">Add Teaching Subject/s</option>
+                <option value="">-- Select Category --</option>
+                <option value="schoolForm">➕ Add Assign School</option>
+                <option value="positionForm">➕ Add Position</option>
+                <option value="subjectForm">➕ Add Teaching Subject/s</option>
             </select>
         </div>
     </div>
@@ -215,12 +214,12 @@ function setErrorMessage(string $message): void {
     <div id="formContainer">
         <!-- Instruction Message -->
         <div id="instructionMessage" class="card p-3">
-            <h5><i class="fas fa-info-circle"></i> How to Proceed</h5>
-            <p class="mb-0">
+            <h5 style="color: #000;"><i class="fas fa-info-circle text-danger"></i> Add Category Guide</h5>
+            <p class="mb-0" style="color: #000;">
                 1. Select an category from the dropdown above<br>
                 2. The corresponding form will appear here<br>
                 3. Fill in the required information<br>
-                4. Click "Submit" to save your entry
+                4. Click "Save" to save your entry
             </p>
         </div>
 
@@ -228,32 +227,32 @@ function setErrorMessage(string $message): void {
 
         <!-- School Form -->
         <form id="schoolForm" method="POST" class="dynamic-form card p-3 d-none">
-            <h5><i class="fas fa-school"></i> Add New Assign School</h5>
+            <h5 style="color: #000;"><i class="fas fa-school" style="color: #000;"></i> Add New Assign School</h5>
             <div class="mb-3">
-                <label class="form-label">Assign School Name</label>
+                <!-- <label class="form-label">Assign School Name</label> -->
                 <input type="text" class="form-control" id="empAssignSchool" name="empAssignSchool" required>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
 
         <!-- Position Form -->
         <form id="positionForm" method="POST" class="dynamic-form card p-3 d-none">
-            <h5><i class="fas fa-user-tie"></i> Add New Position</h5>
+            <h5 style="color: #000;"><i class="fas fa-user-tie" style="color: #000;"></i> Add New Position</h5>
             <div class="mb-3">
-                <label class="form-label">Add Position</label>
+                <!-- <label class="form-label">Add Position</label> -->
                 <input type="text" class="form-control" id="empPosition" name="empPosition" required>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
 
         <!-- Subject Form -->
         <form id="subjectForm" method="POST" class="dynamic-form card p-3 d-none">
-            <h5><i class="fas fa-book-open"></i> Add New Teaching Subject</h5>
+            <h5 style="color: #000;"><i class="fas fa-book-open" style="color: #000;"></i> Add New Teaching Subject</h5>
             <div class="mb-3">
-                <label class="form-label">Teaching Subject Name</label>
+                <!-- <label class="form-label">Teaching Subject Name</label> -->
                 <input type="text" class="form-control" id="empTeachingSubject" name="empTeachingSubject" required>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
 </div>

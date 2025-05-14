@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         
                         <div class="mb-3">
-                            <label for="confirm_password" class="form-label">Confirm Password</label>
+                            <label for="confirm_password" class="form-label">Confirm New Password</label>
                             <input type="password" name="confirm_password" id="confirm_password" 
                                    class="form-control" 
                                    placeholder="Confirm new password"
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         
                         <div class="mb-3">
-                            <button type="submit" class="btn btn-dark">Update Account</button>
+                            <button type="submit" class="btn btn-light" style="color: #fff; background-color: #000;">Update Account</button>
                         </div>
                     </div>
                 </div>

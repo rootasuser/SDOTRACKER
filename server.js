@@ -43,3 +43,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         submitButton.textContent = 'Login';
     });
 });
+
+
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
