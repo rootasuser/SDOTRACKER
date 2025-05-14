@@ -29,7 +29,7 @@ class Config
             $this->DB_CONNECTION->exec("SET NAMES 'utf8'");
 
         } catch (PDOException $e) {
-            error_log("Database connection failed: " . $e->getMessage() . " - File: " . $e->getFile() . " - Line: " . $e->getLine());
+            error_log("DB conn failed: " . $e->getMessage() . " - File: " . $e->getFile() . " - Line: " . $e->getLine());
             exit;
         }
     }

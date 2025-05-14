@@ -142,7 +142,7 @@ try {
 <body>
 <div class="container">
     <div class="mb-3">
-        <h1>Search Employee <i class="fas fa-arrow-alt-circle-right"></i> <?= htmlspecialchars($employee['empName'] ?? ''); ?></h1>
+        <h1>Search / Update Employee <i class="fas fa-arrow-alt-circle-right"></i> <?= htmlspecialchars($employee['empName'] ?? ''); ?></h1>
         <form action="" method="POST">
             <input type="text" class="form-control" name="search" 
                    value="<?= htmlspecialchars($_POST['search'] ?? '') ?>" 

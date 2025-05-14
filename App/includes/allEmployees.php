@@ -210,7 +210,7 @@ if (isset($_POST['delete_id'])) {
 
 <script>
 $(document).ready(function () {
-    // Initialize DataTable only if table exists
+
     if ($('#dataTable').length) {
         $('#dataTable').DataTable({
             paging: true,
@@ -223,7 +223,7 @@ $(document).ready(function () {
         });
     }
     
-    // Modal logic: when an element with class "show-modal" is clicked, set modal content.
+
     $('.show-modal').on('click', function () {
         const assignSchool = $(this).data('assign-school') || 'N/A';
         const position = $(this).data('position') || 'N/A';
@@ -239,7 +239,6 @@ function printTable() {
     var table = document.getElementById('dataTable');
     var printWindow = window.open('', '', 'width=600,height=400');
 
-    // Remove the last column in each row (both th and td)
     var rows = table.rows;
     for (var i = 0; i < rows.length; i++) {
         rows[i].deleteCell(rows[i].cells.length - 1);

@@ -14,7 +14,7 @@ $subjectsQuery = "SELECT empTeachingSubject FROM subjects";
 $subjectsResult = $conn->query($subjectsQuery);
 
 if (!$positionsResult || !$schoolsResult || !$subjectsResult) {
-    die('Error fetching data');
+    die('Err fetch data.');
 }
 
 $successMessage = '';
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   
     if (empty($empName) || empty($empNumber) || empty($empAddress)) {
-        $errorMessage = "Please fill in all required fields.";
+        $errorMessage = "Fill all fields is required.";
     } else {
    
         $insertQuery = "INSERT INTO employees (empName, empNumber, empAddress, empSex, empPosition, empAssignSchool, empTeachingSubject, empHistory)

@@ -7,7 +7,8 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDO Teacher Tracker Portal</title>
+    <title>SDO Bayawan Teacher Tracker Portal</title>
+    <link rel="icon" type="image/x-icon" href="App/assets/images/logo.jpg">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css">
 </head>
@@ -16,7 +17,7 @@ session_start();
         <div class="card" style="width: 25rem;">
             <img src="App/assets/images/logo.jpg" class="card-img-top" alt="Portal Logo" height="190">
             <div class="card-body" style="background-color: #20263e;">
-                <h5 class="card-title text-center text-white">SDO Teacher Tracker Portal</h5>
+                <h5 class="card-title text-center text-white">SDO Bayawan Teacher Tracker Portal</h5>
                 <hr>
                 <form id="loginForm">
                     <div id="errorMessage" class="alert alert-danger d-none"></div>
@@ -36,58 +37,6 @@ session_start();
     </div>
 
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
- document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent default form submission
-
-    // Get form data
-    const formData = new FormData(this);
-
-    // Show loading or prevent further clicks
-    const submitButton = this.querySelector('button');
-    submitButton.disabled = true;
-    submitButton.textContent = 'Logging in...';
-
-    // Perform the fetch request to login.php
-    fetch('App/Modules/Auth/login.php?action=login', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())  // Get the response as text first
-    .then(text => {
-        try {
-            const data = JSON.parse(text);  // Try to parse the text as JSON
-            console.log(data);  // Log the parsed data
-
-            if (data.success) {
-                // Redirect on success
-                window.location.href = 'App/Modules/User/dashboard';
-            } else {
-                // Show error message if login fails
-                const errorMessage = document.getElementById('errorMessage');
-                errorMessage.textContent = data.message;
-                errorMessage.classList.remove('d-none');
-            }
-        } catch (error) {
-            console.error('Failed to parse JSON:', error);
-            console.log('Response was:', text);  // Log the raw response to help debug
-            const errorMessage = document.getElementById('errorMessage');
-            errorMessage.textContent = 'Error Processing response.';
-            errorMessage.classList.remove('d-none');
-        }
-        submitButton.disabled = false;
-        submitButton.textContent = 'Login';
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        const errorMessage = document.getElementById('errorMessage');
-        errorMessage.textContent = 'An unexpected error occurred. Please try again.';
-        errorMessage.classList.remove('d-none');
-        submitButton.disabled = false;
-        submitButton.textContent = 'Login';
-    });
-});
-
-    </script>
+    <script src="server.js"></script>
 </body>
 </html>

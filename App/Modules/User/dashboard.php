@@ -56,7 +56,8 @@ $user = $_SESSION['user'];
     <meta name="description" content="">
     <meta name="author" content="Windel Navales">
 
-    <title>SDO Teacher Tracker - Dashboard </title>
+    <title>SDO Bayawan Teacher Tracker - Dashboard </title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/logo.jpg">
 
     <!-- Custom fonts for this template-->
     <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -112,20 +113,20 @@ $user = $_SESSION['user'];
             <!-- Nav Item - Employees -->
             <li class="nav-item">
                 <a class="nav-link" href="?page=addEmployee">
-                    <i class="fas fa-fw fa-user-tie"></i>
+                    <i class="fas fa-fw fa-plus"></i>
                     <span>Add Employee</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="?page=searchEmployee">
                     <i class="fas fa-fw fa-search"></i>
-                    <span>Search Employee</span></a>
+                    <span>Search / Update Employee</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="?page=allEmployees">
                     <i class="fas fa-fw fa-users"></i>
-                    <span>Employee Details</span></a>
+                    <span>Employee List</span></a>
             </li>
 
                <!-- Divider -->
@@ -138,14 +139,14 @@ $user = $_SESSION['user'];
             <!-- Nav Item - Data Entries -->
             <li class="nav-item">
                 <a class="nav-link" href="?page=manage">
-                    <i class="fas fa-fw fa-tools"></i>
-                    <span>Manage</span></a>
+                    <i class="fas fa-fw fa-plus"></i>
+                    <span>Add Category</span></a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="?page=records">
-                    <i class="fas fa-fw fa-list"></i>
-                    <span>Records</span></a>
+                    <i class="fas fa-fw fa-filter"></i>
+                    <span>Employees Category Filter </span></a>
             </li>
 
           
@@ -161,7 +162,7 @@ $user = $_SESSION['user'];
             <li class="nav-item">
                 <a class="nav-link" href="?page=history-logs">
                     <i class="fas fa-fw fa-history"></i>
-                    <span>History Logs</span></a>
+                    <span>Activity Log</span></a>
             </li>
 
             <li class="nav-item">

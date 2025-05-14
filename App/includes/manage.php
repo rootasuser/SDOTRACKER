@@ -185,9 +185,9 @@ function setErrorMessage(string $message): void {
     <!-- Selection Dropdown -->
     <div class="d-flex justify-content-end mb-3">
         <div class="w-25">
-            <label for="manageSelectionOption" class="form-label">Select Options:</label>
+            <label for="manageSelectionOption" class="form-label">Select Category:</label>
             <select class="form-select" id="manageSelectionOption">
-                <option value="">-- Select Option --</option>
+                <option value="">-- Select Categories --</option>
                 <option value="schoolForm">Add Assign School</option>
                 <option value="positionForm">Add Position</option>
                 <option value="subjectForm">Add Teaching Subject/s</option>
@@ -217,7 +217,7 @@ function setErrorMessage(string $message): void {
         <div id="instructionMessage" class="card p-3">
             <h5><i class="fas fa-info-circle"></i> How to Proceed</h5>
             <p class="mb-0">
-                1. Select an option from the dropdown above<br>
+                1. Select an category from the dropdown above<br>
                 2. The corresponding form will appear here<br>
                 3. Fill in the required information<br>
                 4. Click "Submit" to save your entry

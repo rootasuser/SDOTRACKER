@@ -26,50 +26,83 @@ $subjects = $subjects_stmt->fetchAll(PDO::FETCH_ASSOC);
 $employees = []; // Initialize empty employees array
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $positionFilter = $_POST['position'] ?? '';
-    $schoolFilter = $_POST['school'] ?? '';
-    $subjectFilter = $_POST['subject'] ?? '';
+    // Securely get input and sanitize
+    $positionFilter = filter_input(INPUT_POST, 'position', FILTER_SANITIZE_STRING);
+    $schoolFilter = filter_input(INPUT_POST, 'school', FILTER_SANITIZE_STRING);
+    $subjectFilter = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_STRING);
 
     // Fetch Employees based on selected filters
     $filter_sql = "
-        SELECT e.id, e.empName, e.empNumber, e.empSex, e.empAddress, e.empHistory, 
-               e.empPosition_id, e.empAssignSchool_id, es.subject_id, s.empTeachingSubject, 
-               p.empPosition, sc.empAssignSchool 
+        SELECT DISTINCT e.id, e.empName, e.empNumber, e.empSex, e.empAddress, e.empHistory, 
+               p.empPosition, sc.empAssignSchool, s.empTeachingSubject
         FROM employees e
-        LEFT JOIN employee_subjects es ON e.id = es.employee_id
-        LEFT JOIN subjects s ON es.subject_id = s.id
         LEFT JOIN positions p ON e.empPosition_id = p.id
         LEFT JOIN schools sc ON e.empAssignSchool_id = sc.id
-        WHERE 1=1";
+        LEFT JOIN employee_subjects es ON e.id = es.employee_id
+        LEFT JOIN subjects s ON es.subject_id = s.id
+        WHERE 1=1"; // Default WHERE clause
 
-    // Apply filters if selected
-    if ($positionFilter) {
-        $filter_sql .= " AND p.empPosition = :position";
-    }
-    if ($schoolFilter) {
-        $filter_sql .= " AND sc.empAssignSchool = :school";
-    }
-    if ($subjectFilter) {
-        $filter_sql .= " AND s.empTeachingSubject = :subject";
+    // Initialize params array for bound values
+    $params = [];
+
+    // Check if any filter is applied
+    if (!empty($positionFilter)) {
+        $filter_sql = "SELECT DISTINCT e.id, e.empName, e.empNumber, e.empSex, e.empAddress, e.empHistory, 
+               p.empPosition, sc.empAssignSchool, s.empTeachingSubject
+               FROM employees e
+               LEFT JOIN positions p ON e.empPosition_id = p.id
+               LEFT JOIN schools sc ON e.empAssignSchool_id = sc.id
+               LEFT JOIN employee_subjects es ON e.id = es.employee_id
+               LEFT JOIN subjects s ON es.subject_id = s.id
+               WHERE p.empPosition = :position";
+        $params[':position'] = $positionFilter; // Add position filter
+    } 
+    elseif (!empty($schoolFilter)) {
+        $filter_sql = "SELECT DISTINCT e.id, e.empName, e.empNumber, e.empSex, e.empAddress, e.empHistory, 
+               p.empPosition, sc.empAssignSchool, s.empTeachingSubject
+               FROM employees e
+               LEFT JOIN positions p ON e.empPosition_id = p.id
+               LEFT JOIN schools sc ON e.empAssignSchool_id = sc.id
+               LEFT JOIN employee_subjects es ON e.id = es.employee_id
+               LEFT JOIN subjects s ON es.subject_id = s.id
+               WHERE sc.empAssignSchool = :school";
+        $params[':school'] = $schoolFilter; // Add school filter
+    } 
+    elseif (!empty($subjectFilter)) {
+        $filter_sql = "SELECT DISTINCT e.id, e.empName, e.empNumber, e.empSex, e.empAddress, e.empHistory, 
+               p.empPosition, sc.empAssignSchool, s.empTeachingSubject
+               FROM employees e
+               LEFT JOIN positions p ON e.empPosition_id = p.id
+               LEFT JOIN schools sc ON e.empAssignSchool_id = sc.id
+               LEFT JOIN employee_subjects es ON e.id = es.employee_id
+               LEFT JOIN subjects s ON es.subject_id = s.id
+               WHERE s.empTeachingSubject = :subject";
+        $params[':subject'] = $subjectFilter; // Add subject filter
     }
 
+    // Prepare the final SQL query
     $filter_stmt = $conn->prepare($filter_sql);
 
-    // Bind values for filters
-    if ($positionFilter) {
-        $filter_stmt->bindValue(':position', $positionFilter);
-    }
-    if ($schoolFilter) {
-        $filter_stmt->bindValue(':school', $schoolFilter);
-    }
-    if ($subjectFilter) {
-        $filter_stmt->bindValue(':subject', $subjectFilter);
+    // Bind parameters dynamically
+    foreach ($params as $key => $value) {
+        $filter_stmt->bindValue($key, $value);
     }
 
     $filter_stmt->execute();
     $employees = $filter_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // ✅ Remove duplicate employee IDs
+    $uniqueEmployees = [];
+    foreach ($employees as $employee) {
+        if (!isset($uniqueEmployees[$employee['id']])) {
+            $uniqueEmployees[$employee['id']] = $employee;
+        }
+    }
+
+    $employees = array_values($uniqueEmployees); // Convert back to indexed array
 }
 ?>
+
 
 <div class="container mt-2">
     <div class="card">
