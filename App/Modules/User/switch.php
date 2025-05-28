@@ -50,6 +50,10 @@
                                     case 'backup':
                                         include '../../includes/backup.php';
                                         break;
+                                    
+                                    case 'research':
+                                        include '../../includes/research.php';
+                                        break;
 
                                     case 'account':
                                         include '../../includes/account.php';

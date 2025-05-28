@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['trainingTitle'], $_PO
         $successMessage = 'Training added successfully!';
         $sweetalert = 'show';
     } catch (PDOException $e) {
-        die("Err adding training: " . $e->getMessage());
+        die("Error adding training: " . $e->getMessage());
     }
 }
 
@@ -65,22 +65,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editTrainingId'], $_P
         $successMessage = 'Training updated successfully!';
         $sweetalert = 'show';
     } catch (PDOException $e) {
-        die("Err updating training: " . $e->getMessage());
+        die("Error updating training: " . $e->getMessage());
     }
 }
 
+/**
+ * IN THIS PART:: DELETE FIRST THE DATA CONNECTED TO (trainings) tbl in employee_trainings tbl
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteTrainingId'])) {
     try {
         $trainingId = htmlspecialchars($_POST['deleteTrainingId']);
         
-        $stmt = $conn->prepare("DELETE FROM trainings WHERE id = :id");
-        $stmt->execute([
-            ':id' => $trainingId
-        ]);
+        // Delete associated employee trainings
+        $stmt = $conn->prepare("DELETE FROM employee_trainings WHERE training_id = :trainingId");
+        $stmt->execute([':trainingId' => $trainingId]);
         
-        $successMessage = 'Training deleted successfully!';
+        // Delete the training
+        $stmt = $conn->prepare("DELETE FROM trainings WHERE id = :id");
+        $stmt->execute([':id' => $trainingId]);
+        
+        $successMessage = 'Training and associated employee trainings deleted successfully!';
         $sweetalert = 'show';
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         die("Err deleting training: " . $e->getMessage());
     }
 }
@@ -91,7 +97,7 @@ try {
     $stmt->execute();
     $trainings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $error = 'Err loading training records.';
+    $error = 'Error loading training records.';
 }
 ?>
 <!DOCTYPE html>
@@ -100,10 +106,12 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Records</title>
-    <link rel="stylesheet" href="/SDOTRACKER/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/SDOTRACKER/css/all.min.css" />
-    <link rel="stylesheet" href="/SDOTRACKER/css/sweetalert2.min.css" />
-    <link rel="stylesheet" href="/SDOTRACKER/node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         th, td {
             text-wrap: nowrap;
@@ -119,7 +127,7 @@ try {
                     <div class="input-group" style="width: 300px;">
                         <input type="text" id="searchInput" class="form-control" placeholder="Search..." onkeyup="searchTraining()">
                     </div>
-                    <button class="btn btn-dark" style="background-color: #000; color: #fff;" data-toggle="modal" data-target="#addNewTrainingModal">
+                    <button class="btn btn-dark" style="background-color: #000; color: #fff;" data-bs-toggle="modal" data-bs-target="#addNewTrainingModal">
                         <i class="fas fa-plus"></i> New Training
                     </button>
                 </div>
@@ -141,18 +149,18 @@ try {
                                         <td>
                                             <a href="#" 
                                             class="text-decoration-none" 
-                                            data-toggle="modal" 
-                                            data-target="#trainingEmployeesModal<?php echo $training['id']; ?>">
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#trainingEmployeesModal<?php echo $training['id']; ?>">
                                                 <?php echo htmlspecialchars($training['title']); ?>
                                             </a>
                                         </td>
                                         <td><?php echo htmlspecialchars($training['date_conducted']); ?></td>
                                         <td><?php echo htmlspecialchars($training['venue']); ?></td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#viewTrainingModal<?php echo $training['id']; ?>">
+                                            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#viewTrainingModal<?php echo $training['id']; ?>">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editTrainingModal<?php echo $training['id']; ?>">
+                                            <a href="#" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editTrainingModal<?php echo $training['id']; ?>">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                             <a href="#" class="btn btn-sm btn-danger" onclick="confirmDelete(<?php echo $training['id']; ?>)">
@@ -161,25 +169,28 @@ try {
                                         </td>
                                     </tr>
 
-                                    <!-- Training Employees Modal -->
-                                    <div class="modal fade" id="trainingEmployeesModal<?php echo $training['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="trainingEmployeesModalLabel" aria-hidden="true">
+                                 <!-- Training Employees Modal -->
+                                    <div class="modal fade" id="trainingEmployeesModal<?php echo $training['id']; ?>" tabindex="-1" aria-labelledby="trainingEmployeesModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="trainingEmployeesModalLabel" style="color: #000;">Employees Related to Training</h5>
+                                                    <h5 class="modal-title" id="trainingEmployeesModalLabel" style="color: #000;">Employees Related to Training <i class="fas fa-arrow-right"></i> <span id="training-title-show" style="color: blue;"><?php echo htmlspecialchars($training['title']); ?></span></h5>
                                                 </div>
                                                 <div class="d-flex mt-1 mb-1 mx-2 ms-2">
-                                                    <input type="text" class="form-control" id="searchingInput" placeholder="Search..." onkeyup="searchingTrainingModal()">
+                                                    <input type="text" class="form-control" id="searchingInput<?php echo $training['id']; ?>" placeholder="Search..." onkeyup="searchingTrainingModal(<?php echo $training['id']; ?>)">
                                                 </div>
                                                 <div class="modal-body" id="trainingEmployeesModalBody<?php echo $training['id']; ?>">
                                                     <!-- Employees list will be loaded here -->
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+
+
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
@@ -194,7 +205,7 @@ try {
     </div>
 
     <!-- Add New Training Modal -->
-    <div class="modal fade" id="addNewTrainingModal" tabindex="-1" role="dialog" aria-labelledby="addNewTrainingModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addNewTrainingModal" tabindex="-1" aria-labelledby="addNewTrainingModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <form id="addTrainingForm" method="post">
@@ -203,24 +214,24 @@ try {
                     </div>
                     
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="trainingTitle" class="form-control-label" style="color: #000;">Title of Training</label>
+                        <div class="mb-3">
+                            <label for="trainingTitle" class="form-label" style="color: #000;">Title of Training</label>
                             <input type="text" class="form-control" id="trainingTitle" name="trainingTitle" required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="trainingDate" class="form-control-label" style="color: #000;">Date Conducted</label>
+                        <div class="mb-3">
+                            <label for="trainingDate" class="form-label" style="color: #000;">Date Conducted</label>
                             <input type="date" class="form-control" id="trainingDate" name="trainingDate" required>
                         </div>
 
-                        <div class="form-group">
-                            <label for="trainingVenue" class="form-control-label" style="color: #000;">Training Venue</label>
+                        <div class="mb-3">
+                            <label for="trainingVenue" class="form-label" style="color: #000;">Training Venue</label>
                             <input type="text" class="form-control" id="trainingVenue" name="trainingVenue" required>
                         </div>
                     </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Save Training</button>
                     </div>
                 </form>
@@ -231,28 +242,28 @@ try {
     <!-- View Training Modal -->
     <?php if (!empty($trainings)): ?>
         <?php foreach ($trainings as $training): ?>
-        <div class="modal fade" id="viewTrainingModal<?php echo $training['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="viewTrainingModalLabel" aria-hidden="true">
+        <div class="modal fade" id="viewTrainingModal<?php echo $training['id']; ?>" tabindex="-1" aria-labelledby="viewTrainingModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="viewTrainingModalLabel" style="color: #000;">Training Details</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="viewTrainingTitle" class="form-control-label" style="color: #000;">Title of Training</label>
+                        <div class="mb-3">
+                            <label for="viewTrainingTitle" class="form-label" style="color: #000;">Title of Training</label>
                             <p><?php echo htmlspecialchars($training['title']); ?></p>
                         </div>
-                        <div class="form-group">
-                            <label for="viewTrainingDate" class="form-control-label" style="color: #000;">Date Conducted</label>
+                        <div class="mb-3">
+                            <label for="viewTrainingDate" class="form-label" style="color: #000;">Date Conducted</label>
                             <p><?php echo htmlspecialchars($training['date_conducted']); ?></p>
                         </div>
-                        <div class="form-group">
-                            <label for="viewTrainingVenue" class="form-control-label" style="color: #000;">Training Venue</label>
+                        <div class="mb-3">
+                            <label for="viewTrainingVenue" class="form-label" style="color: #000;">Training Venue</label>
                             <p><?php echo htmlspecialchars($training['venue']); ?></p>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -263,7 +274,7 @@ try {
     <!-- Edit Training Modal -->
     <?php if (!empty($trainings)): ?>
         <?php foreach ($trainings as $training): ?>
-        <div class="modal fade" id="editTrainingModal<?php echo $training['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editTrainingModalLabel" aria-hidden="true">
+        <div class="modal fade" id="editTrainingModal<?php echo $training['id']; ?>" tabindex="-1" aria-labelledby="editTrainingModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <form id="editTrainingForm" method="post">
@@ -273,24 +284,24 @@ try {
                         </div>
                         
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label for="editTrainingTitle" class="form-control-label" style="color: #000;">Title of Training</label>
+                            <div class="mb-3">
+                                <label for="editTrainingTitle" class="form-label" style="color: #000;">Title of Training</label>
                                 <input type="text" class="form-control" id="editTrainingTitle" name="editTrainingTitle" value="<?php echo htmlspecialchars($training['title']); ?>" required>
                             </div>
 
-                            <div class="form-group">
-                                <label for="editTrainingDate" class="form-control-label" style="color: #000;">Date Conducted</label>
+                            <div class="mb-3">
+                                <label for="editTrainingDate" class="form-label" style="color: #000;">Date Conducted</label>
                                 <input type="date" class="form-control" id="editTrainingDate" name="editTrainingDate" value="<?php echo htmlspecialchars($training['date_conducted']); ?>" required>
                             </div>
 
-                            <div class="form-group">
-                                <label for="editTrainingVenue" class="form-control-label" style="color: #000;">Training Venue</label>
+                            <div class="mb-3">
+                                <label for="editTrainingVenue" class="form-label" style="color: #000;">Training Venue</label>
                                 <input type="text" class="form-control" id="editTrainingVenue" name="editTrainingVenue" value="<?php echo htmlspecialchars($training['venue']); ?>" required>
                             </div>
                         </div>
                         
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Update Training</button>
                         </div>
                     </form>
@@ -300,37 +311,12 @@ try {
         <?php endforeach; ?>
     <?php endif; ?>
 
-  
-    <script src="/SDOTRACKER/js/jquery-3.5.1.slim.min.js"></script>
-    <script src="/SDOTRACKER/js/popper.min.js"></script>
-    <script src="/SDOTRACKER/js/bootstrap.min.js"></script>
-    <script src="/SDOTRACKER/js/jquery-3.5.1.min.js"></script>
-    <script src="/SDOTRACKER/js/sweetalert2.all.min.js"></script>
-
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.all.min.js"></script>
     <script>
+      
 
-        // Search table data inside the modal
-        function searchingTrainingModal() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchingInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("trainingEmployeesModalBody");
-            tr = table.getElementsByTagName("tr");
-
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0]; 
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        // Search table data outside the modal
         function searchTraining() {
             var input = document.getElementById("searchInput");
             var filter = input.value.toUpperCase();
@@ -392,58 +378,116 @@ try {
             });
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                modal.addEventListener('shown.bs.modal', function() {
-                    const modalId = this.getAttribute('id');
-                    if (modalId.startsWith('trainingEmployeesModal')) {
-                        const trainingId = modalId.replace('trainingEmployeesModal', '');
-                        loadTrainingEmployees(trainingId);
-                    }
-                });
-            });
-        });
+// Search table data inside the modal
+function searchingTrainingModal(modalId) {
+    // Get the search input with the specific ID
+    var input = document.getElementById(`searchingInput${modalId}`);
+    if (!input) return;
 
-        function loadTrainingEmployees(trainingId) {
-            const modalBody = document.getElementById(`trainingEmployeesModalBody${trainingId}`);
-            
-            // Show loading indicator
-            modalBody.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div></div>';
-            
-            // GET employees from the server
-            fetch(`get_training_employees.php?trainingId=${trainingId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Update modal body with employee data
-                    if (data.length > 0) {
-                        let html = '<table class="table table-striped">';
-                        html += '<thead><tr><th>Name</th><th>Position</th><th>School Assigned</th></tr></thead><tbody id="trainingEmployeesModalBody">';
-                        data.forEach(employee => {
-                            html += `<tr>
-                                <td>${employee.empName}</td>
-                                <td>${employee.empPosition}</td>
-                                <td>${employee.empAssignSchool}</td>
-                            </tr>`;
-                        });
-                        html += '</tbody></table>';
-                        modalBody.innerHTML = html;
-                    } else if (data.error) {
-                        modalBody.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
-                    } else {
-                        modalBody.innerHTML = '<div class="alert alert-info">No employees found for this training.</div>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading employees:', error);
-                    modalBody.innerHTML = `<div class="alert alert-danger">Error loading employees: ${error.message}</div>`;
-                });
+    var filter = input.value.toUpperCase();
+
+    // Get the modal body with the specific ID
+    var modalBody = document.getElementById(`trainingEmployeesModalBody${modalId}`);
+    if (!modalBody) return;
+
+    // Get the table within the modal body
+    var table = modalBody.querySelector('table');
+    if (!table) return;
+
+    // Get all rows in the table
+    var tr = table.getElementsByTagName("tr");
+
+    // Loop through all rows and hide those that don't match the search
+    for (var i = 0; i < tr.length; i++) {
+        var td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+            var txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
         }
+    }
+}
+
+// Initialize search functionality when modal is shown
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('shown.bs.modal', function(event) {
+        const modal = event.relatedTarget.closest('.modal');
+        if (!modal) return;
+
+        const modalId = modal.getAttribute('id');
+        if (modalId && modalId.startsWith('trainingEmployeesModal')) {
+            const trainingId = modalId.replace('trainingEmployeesModal', '');
+            loadTrainingEmployees(trainingId, modal);
+
+            // Setup search functionality for this modal
+            const searchInput = document.getElementById(`searchingInput${trainingId}`);
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function() {
+                    searchingTrainingModal(trainingId);
+                });
+            }
+        }
+    });
+});
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.addEventListener('shown.bs.modal', function() {
+            const modalId = this.getAttribute('id');
+            if (modalId.startsWith('trainingEmployeesModal')) {
+                const trainingId = modalId.replace('trainingEmployeesModal', '');
+                loadTrainingEmployees(trainingId);
+            }
+        });
+    });
+});
+
+function loadTrainingEmployees(trainingId) {
+    const modalBody = document.getElementById(`trainingEmployeesModalBody${trainingId}`);
+
+
+    // Show loading indicator
+    modalBody.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    
+    // GET employees from the server
+    fetch(`get_training_employees.php?trainingId=${trainingId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update modal body with employee data
+            if (data.length > 0) {
+                let html = '<table class="table table-striped">';
+                html += '<thead><tr><th>Name</th><th>Position</th><th>School Assigned</th></tr></thead><tbody id="trainingEmployeesModalBody">';
+                data.forEach(employee => {
+
+                    html += `<tr>
+                        <td>${employee.empName}</td>
+                        <td>${employee.empPosition}</td>
+                        <td>${employee.empAssignSchool}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+                modalBody.innerHTML = html;
+            } else if (data.error) {
+                modalBody.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+            } else {
+                modalBody.innerHTML = '<div class="alert alert-info">No employees found for this training.</div>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading employees:', error);
+            modalBody.innerHTML = `<div class="alert alert-danger">Error loading employees: ${error.message}</div>`;
+        });
+}
     </script>
 </body>
 </html>

@@ -104,6 +104,8 @@ if (isset($_POST['delete_id'])) {
    
 </style>
 
+
+
 <div class="container mt-4">
     <!-- Success/Error Notifications -->
     <?php if (!empty($successMessage)): ?>
@@ -163,7 +165,13 @@ if (isset($_POST['delete_id'])) {
                     <?php foreach ($employees as $employee): ?>
                         <tr>
                             <td style="font-size: 12px; white-space: nowrap; color: #000;"><?= htmlspecialchars($employee['id']) ?></td>
-                            <td style="font-size: 12px; white-space: nowrap; color: #000;"><?= htmlspecialchars($employee['empName']) ?></td>
+                            <td style="font-size: 12px; white-space: nowrap; color: #000;">
+                                <a href="#" 
+                                class="employee-name-link"
+                                data-employee-name="<?= urlencode(htmlspecialchars($employee['empName'])) ?>">
+                                    <?= htmlspecialchars($employee['empName']) ?>
+                                </a>
+                            </td>
                             <td style="font-size: 12px; white-space: nowrap; color: #000;"><?= htmlspecialchars($employee['empNumber']) ?></td>
                             <td style="font-size: 12px; white-space: nowrap; text-align: center; color: #000;">
                             <?php

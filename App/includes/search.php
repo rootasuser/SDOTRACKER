@@ -21,6 +21,7 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
+
 // Get username from session or use fallback
 $username = $_SESSION['username'] ?? 'Unknown User';
 
@@ -54,10 +55,11 @@ try {
     $successMessage = ''; 
     $errorMessage = ''; 
 
+    
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
         $searchTerm = trim($_POST['search']);
-        
+
         try {
 
             $stmt = $conn->prepare("

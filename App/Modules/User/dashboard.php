@@ -93,6 +93,20 @@
                     <span>Training Attended</span></a>
             </li>
 
+             <!-- Divider -->
+             <hr class="sidebar-divider">
+                   <!-- Heading -->
+            <div class="sidebar-heading">
+                Research Management
+            </div>
+
+             <!-- Nav Item - Research Title -->
+             <li class="nav-item">
+                <a class="nav-link" href="?page=research">
+                    <i class="fas fa-fw fa-microscope"></i>
+                    <span>Research Titles</span></a>
+            </li>
+
                <!-- Divider -->
                <hr class="sidebar-divider">
                    <!-- Heading -->
